@@ -35,10 +35,10 @@ class Instruction(object):
             i = int(string, 10)
         elif string[0:2] == '0b' or string[0:3] == '-0b':
             i = int(string, 2)
+        elif string[0:2] == '0o' or string[0:3] == '-0o':
+            i = int(string, 8)
         elif string[0:2] == '0x' or string[0:3] == '-0x':
             i = int(string, 16)
-        elif string[0] == '0' or string[0:2] == '-0':
-            i = int(string, 8)
         else:
             i = int(string)
 

@@ -16,7 +16,7 @@ class TestInstruction(unittest.TestCase):
     def test_str_to_int(self):
         inst = Instruction()
         self.assertEqual(0b100, inst._str_to_int('0b100'))
-        self.assertEqual(0100, inst._str_to_int('0100'))
+        self.assertEqual(0o100, inst._str_to_int('0o100'))
         self.assertEqual(100, inst._str_to_int('100'))
         self.assertEqual(0x100, inst._str_to_int('0x100'))
         self.assertEqual(253, inst._str_to_int('-3', bits=8))
