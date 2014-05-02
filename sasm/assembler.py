@@ -37,8 +37,6 @@ class Assembler(object):
         op = groups[0].lower()
         args = tuple(groups[1].lower().replace(' ', '').split(','))
 
-        self.counter = 0
-
         if op in INST_LUT:
             self.instructions.append(INST_LUT[op](args))
             self.counter += 1
@@ -53,6 +51,7 @@ class Assembler(object):
             raise LookupError('Instruction is not implemented: %s' % op)
 
     def load(self, data):
+        self.counter = 0
         for line in data.split('\n'):
             self._add_instruction(line)
         self.options['address_radix'] = self.options['address_radix'].upper()

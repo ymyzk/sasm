@@ -113,7 +113,9 @@ class BInstruction(Instruction):
 
     def compile(self, assembler):
         if isinstance(self.d, Label):
-            self.d = assembler.labels[self.d.name].address - assembler.counter
+            self.d = assembler.labels[self.d.name].address
+            self.d -= assembler.counter
+            self.d -= 1
             self.d = self._get_complement(self.d, bits=8)
         self.instruction += self.d
         return self.instruction
@@ -249,7 +251,9 @@ class B(IBInstruction):
 
     def compile(self, assembler):
         if isinstance(self.d, Label):
-            self.d = assembler.labels[self.d.name].address - assembler.counter
+            self.d = assembler.labels[self.d.name].address
+            self.d -= assembler.counter
+            self.d -= 1
             self.d = self._get_complement(self.d, bits=8)
         self.instruction += self.d
         return self.instruction
@@ -289,6 +293,10 @@ class Label(object):
     def __init__(self, args):
         self.address = 0
         self.name = args[0]
+
+    def __repr__(self):
+        return '{0:s}: 0x{1:03x}'.format(self.name, self.address)
+
 
 LUT = {
     'add': Add,
