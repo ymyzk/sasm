@@ -82,7 +82,7 @@ class LSInstruction(Instruction):
         Instruction.__init__(self)
 
         self.ra = self._get_register(args[0])
-        self.d = int(args[1])
+        self.d = self._str_to_int(args[0], bits=8)
         self.rb = self._get_register(args[2])
 
         self.instruction = 0x0000
