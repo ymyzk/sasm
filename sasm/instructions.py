@@ -238,6 +238,20 @@ class Li(IBInstruction):
         return self.instruction
 
 
+class Addi(IBInstruction):
+    def __init__(self, args):
+        IBInstruction.__init__(self)
+        self.rb = self._get_register(args[0])
+        self.d = self._str_to_int(args[1], bits=8)
+
+        self.instruction += self.d
+        self.instruction += (self.rb << 8)
+        self.instruction += (0b001 << 11)
+
+    def compile(self, assembler):
+        return self.instruction
+
+
 class B(IBInstruction):
     def __init__(self, args):
         self.instruction = 0x8000
@@ -316,6 +330,7 @@ LUT = {
     'ld': Ld,
     'st': St,
     'li': Li,
+    'addi': Addi,
     'b': B,
     'be': Be,
     'blt': Blt,

@@ -112,3 +112,11 @@ class TestLi(unittest.TestCase):
         self.assertEqual(0b1000001100001101, inst.compile(None))
         inst = Li(['r3', '-3'])
         self.assertEqual(0b1000001111111101, inst.compile(None))
+
+
+class TestAddi(unittest.TestCase):
+    def test_compile(self):
+        inst = Addi(['r3', '13'])
+        self.assertEqual(0b1000101100001101, inst.compile(None))
+        inst = Addi(['r3', '-3'])
+        self.assertEqual(0b1000101111111101, inst.compile(None))
