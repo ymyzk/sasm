@@ -11,6 +11,7 @@ from sasm.instructions import LUT as INST_LUT
 class Assembler(object):
     def __init__(self):
         self.counter = 0
+        self.debug_counter = 0
         self.instructions = []
         self.labels = {}
         self.options = {
@@ -22,6 +23,8 @@ class Assembler(object):
         self.re_inst = re.compile(re_inst)
 
     def _add_instruction(self, line):
+        self.debug_counter += 1
+
         # 行前後の空白を削除
         line = line.strip()
         # 空行とコメントのみの行を削除
@@ -30,6 +33,10 @@ class Assembler(object):
 
         # 命令の形にマッチしているかチェック
         match = self.re_inst.match(line)
+
+        if match is None:
+            raise SyntaxError('Line: {0}, {1}'.format(self.debug_counter, line))
+
         groups = match.groups()
         # 引数がない場合は空文字列を設定する
         if len(groups) == 1:
@@ -52,6 +59,7 @@ class Assembler(object):
 
     def load(self, data):
         self.counter = 0
+        self.debug_counter = 0
         for line in data.split('\n'):
             self._add_instruction(line)
         self.options['address_radix'] = self.options['address_radix'].upper()
