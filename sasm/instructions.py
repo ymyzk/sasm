@@ -24,7 +24,6 @@ class Instruction(object):
             return self._register_lut[reg]
         else:
             raise LookupError('Register is not implemented: %s' % reg)
-            return ''
 
     def _get_complement(self, i, bits=8):
         if i < 0:

@@ -22,6 +22,12 @@ class TestInstruction(unittest.TestCase):
         self.assertEqual(0x100, inst._str_to_int('0x100'))
         self.assertEqual(253, inst._str_to_int('-3', bits=8))
 
+    def test_get_register(self):
+        inst = Instruction()
+        self.assertEqual(1, inst._get_register('r1'))
+        with self.assertRaises(LookupError):
+            inst._get_register('r100')
+
 
 class TestAdd(unittest.TestCase):
     def test_compile(self):
@@ -156,6 +162,10 @@ class TestBe(unittest.TestCase):
         assembler.counter = 13
         self.assertEqual(0b1011100011111100, inst.compile(assembler))
 
+        inst = Be(['-5'])
+        assembler = Assembler()
+        self.assertEqual(0b1011100011111011, inst.compile(assembler))
+
 
 class TestBlt(unittest.TestCase):
     def test_compile(self):
@@ -188,3 +198,10 @@ class TestBne(unittest.TestCase):
         assembler.labels['name'] = label
         assembler.counter = 13
         self.assertEqual(0b1011101111111100, inst.compile(assembler))
+
+
+class TestOption(unittest.TestCase):
+    def test_init(self):
+        option = Option(['name', 'value'])
+        self.assertEqual('name', option.name)
+        self.assertEqual('value', option.value)
