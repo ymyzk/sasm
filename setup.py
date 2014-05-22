@@ -7,7 +7,7 @@ except:
 
 
 setup(name='sasm',
-      version='0.1',
+      version='0.2',
       description='Simple Assembler for SIMPLE Architecture',
       author='Yusuke Miyazaki',
       author_email='miyazaki.dev@gmail.com',
