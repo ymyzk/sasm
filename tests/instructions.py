@@ -4,6 +4,7 @@
 
 import unittest
 
+from sasm.assembler import Assembler
 from sasm.instructions import *
 
 
@@ -106,6 +107,18 @@ class TestHlt(unittest.TestCase):
         self.assertEqual(0b1100000011110000, inst.compile(None))
 
 
+class TestLd(unittest.TestCase):
+    def test_compile(self):
+        inst = Ld(['r3', '-1', 'r4'])
+        self.assertEqual(0b0001110011111111, inst.compile(None))
+
+
+class TestSt(unittest.TestCase):
+    def test_compile(self):
+        inst = St(['r3', '-3', 'r4'])
+        self.assertEqual(0b0101110011111101, inst.compile(None))
+
+
 class TestLi(unittest.TestCase):
     def test_compile(self):
         inst = Li(['r3', '13'])
@@ -120,3 +133,58 @@ class TestAddi(unittest.TestCase):
         self.assertEqual(0b1000101100001101, inst.compile(None))
         inst = Addi(['r3', '-3'])
         self.assertEqual(0b1000101111111101, inst.compile(None))
+
+
+class TestB(unittest.TestCase):
+    def test_compile(self):
+        label = Label(['name'])
+        label.address = 10
+        inst = B(['name'])
+        assembler = Assembler()
+        assembler.labels['name'] = label
+        assembler.counter = 7
+        self.assertEqual(0b1010000000000010, inst.compile(assembler))
+
+
+class TestBe(unittest.TestCase):
+    def test_compile(self):
+        label = Label(['name'])
+        label.address = 10
+        inst = Be(['name'])
+        assembler = Assembler()
+        assembler.labels['name'] = label
+        assembler.counter = 13
+        self.assertEqual(0b1011100011111100, inst.compile(assembler))
+
+
+class TestBlt(unittest.TestCase):
+    def test_compile(self):
+        label = Label(['name'])
+        label.address = 10
+        inst = Blt(['name'])
+        assembler = Assembler()
+        assembler.labels['name'] = label
+        assembler.counter = 13
+        self.assertEqual(0b1011100111111100, inst.compile(assembler))
+
+
+class TestBle(unittest.TestCase):
+    def test_compile(self):
+        label = Label(['name'])
+        label.address = 10
+        inst = Ble(['name'])
+        assembler = Assembler()
+        assembler.labels['name'] = label
+        assembler.counter = 13
+        self.assertEqual(0b1011101011111100, inst.compile(assembler))
+
+
+class TestBne(unittest.TestCase):
+    def test_compile(self):
+        label = Label(['name'])
+        label.address = 10
+        inst = Bne(['name'])
+        assembler = Assembler()
+        assembler.labels['name'] = label
+        assembler.counter = 13
+        self.assertEqual(0b1011101111111100, inst.compile(assembler))
