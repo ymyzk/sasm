@@ -1,0 +1,93 @@
+; r0: nums_left
+; r1: nums_right
+; r2: left
+; r3: right
+; r4: pivot
+; r5: stack
+; r6: temp1
+; r7: temp2
+
+option(depth, 2048)
+
+; nums_left = 0x400
+li(r0, 0x40)
+sll(r0, 4)
+
+; nums_right + 1 = 0x800
+li(r1, 0x40)
+sll(r1, 5)
+
+; left = right
+mov(r2, r0)
+
+; stack = 0
+li(r5, 0)
+
+label(loop_a)
+    label(loop_b)
+        ; temp1 = left
+        mov(r6, r2)
+        ; temp1++
+        addi(r6, 1)
+        ; if ([nums_right] <= temp1) goto loop_b_out;
+        cmp(r1, r6)
+        ble(loop_b_out)
+
+        ; Pivot
+        ; pivot = nums[left];
+        ld(r4, 0, r2)
+        ; Push
+        ; *stack = nums_right;
+        st(r1, 0, r5)
+        ; stack++;
+        addi(r5, 1)
+        ; right = left - 1
+        mov(r3, r2)
+        addi(r3, -1)
+        label(loop_c)
+            label(loop_d1)
+                ; right++
+                addi(r3, 1)
+                ; temp1 = nums[right]
+                ld(r6, 0, r3)
+                ; if (temp1 < pivot) goto loop_d1
+                cmp(r6, r4)
+                blt(loop_d1)
+            label(loop_d2)
+                ; nums_right--
+                addi(r1, -1)
+                ; temp2 = [nums_right]
+                ld(r7, 0, r1)
+                ; if (pivot < temp2) goto loop_d2;
+                cmp(r4, r7)
+                blt(loop_d2)
+
+            ; if (nums_right <= right) goto loop_c_out;
+            cmp(r1, r3)
+            ble(loop_c_out)
+
+            ; Swap
+            ; nums[right] = temp2;
+            st(r7, 0, r3)
+            ; [nums_right] = temp1;
+            st(r6, 0, r1)
+            b(loop_c)
+        label(loop_c_out)
+
+        addi(r1, 1)
+        b(loop_b)
+    label(loop_b_out)
+
+    ; if (bp == sp) goto loop_a_out;
+    li(r6, 0)
+    cmp(r5, r6)
+    be(loop_a_out)
+
+    ; left = nums_right;
+    mov(r2, r1)
+    ; Pop
+    addi(r5, -1)
+    ld(r1, 0, r5)
+    b(loop_a);
+label(loop_a_out)
+hlt()
