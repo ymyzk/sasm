@@ -1,0 +1,63 @@
+option(depth, 2048)
+option(data_radix, HEX)
+
+; r0: Start = 0x400
+li(r0, 0x40)
+sll(r0, 4)
+; r1: Last + 1= 0x800
+li(r1, 0x40)
+sll(r1, 5)
+; r2: i = start + 1
+mov(r2, r0)
+addi(r2, 1)
+; r3: j
+; r4: zero
+li(r4, 0)
+; r6: temp1
+; r7: temp2
+
+label(insertion_outer)
+  ; temp1 = nums[i];
+  ; temp2 = nums[i - 1];
+  ld(r6, 0, r2)
+  ld(r7, -1, r2)
+
+  ; if (temp2 <= temp1) goto insertion_if;
+  cmp(r7, r6)
+  ble(insertion_if)
+
+  ; j = i;
+  mov(r3, r2)
+
+  label(insertion_inner)
+    ; nums[j] = temp2;
+    st(r7, 0, r3)
+    ; j--;
+    addi(r3, -1)
+    ; temp2 = nums[j - 1];
+    ld(r7, -1, r3)
+
+    ; if (j <= 0) goto insertion_continue;
+    cmp(r3, r0)
+    ble(insertion_continue)
+
+    ; if (temp2 <= temp1) goto insertion_continue;
+    cmp(r7, r6)
+    ble(insertion_continue)
+
+    ; goto insertion_inner;
+    b(insertion_inner)
+
+    label(insertion_continue)
+
+    ; nums[j] = temp1;
+    st(r6, 0, r3)
+
+    label(insertion_if)
+    ; i++;
+    addi(r2, 1)
+    ; if (i < len) goto insertion_outer;
+    cmp(r2, r1)
+    blt(insertion_outer)
+
+hlt()
