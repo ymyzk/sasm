@@ -12,6 +12,7 @@ Requirements
 * Python 2.7+
 * Python 3.2+
 * PyPy
+* PyPy3
 
 Installation
 ------------
