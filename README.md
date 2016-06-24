@@ -2,7 +2,7 @@ sasm
 ====
 
 [![Build Status](https://travis-ci.org/ymyzk/sasm.svg?branch=master)](https://travis-ci.org/ymyzk/sasm)
-[![Coverage Status](https://coveralls.io/repos/ymyzk/sasm/badge.png?branch=master)](https://coveralls.io/r/ymyzk/sasm?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/ymyzk/sasm/badge.svg?branch=master)](https://coveralls.io/github/ymyzk/sasm?branch=master)
 [![PyPI version](https://badge.fury.io/py/sasm.svg)](http://badge.fury.io/py/sasm)
 
 Simple Assembler for SIMPLE Architecture
